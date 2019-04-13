@@ -29,14 +29,14 @@ RUN ./scripts/feeds install -a
 
 # Allow the user to specify the custom files that will be built into the image
 # "docker build --build-arg overlay=<path_to_root_of_of_overlay_files>"
-ARG overlay=/dev/null
-ADD $overlay files/
+ARG overlay=./files
+ADD --chown=builder:builder $overlay files/
+
+# Allow the user to specify the config settings for the build
+ARG configfile=config
+ADD --chown=builder:builder $configfile .config
 
 RUN make defconfig
-# Allow the user to specify the config settings for the build
-ARG configfile=/dev/null
-ADD $configfile .config
-
 RUN make download
 RUN make prereq
 RUN make tools/install
