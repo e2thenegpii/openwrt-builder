@@ -6,10 +6,11 @@ LABEL maintainer="e2thenegpii@gmail.com"
 RUN apt update 2>/dev/null && apt -y upgrade 2>/dev/null
 
 # Install required packages for buildroot
-RUN apt -y install build-essential libncurses5-dev gawk git libssl-dev gettext zlib1g-dev swig unzip time wget file python2.7 2>/dev/null
+RUN apt -y install sudo build-essential libncurses5-dev gawk git libssl1.0-dev gettext zlib1g-dev swig unzip time wget file python2.7 2>/dev/null
 
 # Add the builder user
 RUN adduser --disabled-password --uid 1000 --gecos "Docker Builder,,," builder
+RUN echo 'builder ALL=NOPASSWD: ALL' >> /etc/sudoers
 
 RUN mkdir -p /src/openwrt && chown builder:builder /src/openwrt
 WORKDIR /src/openwrt
